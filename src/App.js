@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import QuienesSomos from './pages/QuienesSomos';
+import Contactanos from './pages/Contactanos';
+import MenuInferior from './components/MenuInferior';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="app-header">
+          <h2>🛒 SuperMercado</h2>
+        </header>
+
+        <main className="contenido">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/quienes-somos" element={<QuienesSomos />} />
+            <Route path="/contactanos" element={<Contactanos />} />
+            <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
+          </Routes>
+        </main>
+
+        <MenuInferior />
+      </div>
+    </Router>
   );
 }
 
