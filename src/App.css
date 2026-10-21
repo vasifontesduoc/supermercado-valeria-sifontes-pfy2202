@@ -385,4 +385,47 @@ tbody tr:hover {
     font-size: 0.8rem;
     padding: 10px 4px;
   }
+
+  /* Detalle de producto */
+  .link-producto {
+    color: var(--verde-oscuro);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--verde);
+  }
+
+  .link-producto:hover {
+    color: var(--verde);
+    border-bottom-style: solid;
+  }
+
+  .btn-volver {
+    background: none;
+    border: 2px solid var(--verde);
+    color: var(--verde);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-volver:hover {
+    background: var(--verde);
+    color: var(--blanco);
+  }
+
+  .detalle {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 24px 28px;
+    box-shadow: var(--sombra);
+    max-width: 500px;
+  }
+
+  .detalle p {
+    margin: 10px 0;
+  }
 }
