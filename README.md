@@ -1,9 +1,6 @@
 # 🛒 SuperMercado – Gestión de Inventario
 
-Sitio web desarrollado en **React** para la gestión de inventario de un supermercado.
-Actividad Formativa 1 – Desarrollo Frontend II (PFY2202), Duoc UC.
-
-**Autora:** Valeria Sifontes
+Sitio web desarrollado en **React** para la gestión de inventario de un supermercado
 
 ## Funcionalidades
 
