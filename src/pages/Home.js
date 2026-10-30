@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { productos, estadoStock } from '../data/productos';
+import { productos } from '../data/productos';
+import { normalizar } from '../utils/normalizar';
+import TarjetaResumen from '../components/TarjetaResumen';
+import FilaProducto from '../components/FilaProducto';
 
 function Home() {
     const [busqueda, setBusqueda] = useState('');
 
-    const texto = busqueda.toLowerCase();
+    const texto = normalizar(busqueda);
     const filtrados = productos.filter(
         (p) =>
-            p.nombre.toLowerCase().includes(texto) ||
-            p.categoria.toLowerCase().includes(texto)
+            normalizar(p.nombre).includes(texto) ||
+            normalizar(p.categoria).includes(texto)
     );
 
     const totalUnidades = productos.reduce((suma, p) => suma + p.stock, 0);
@@ -20,18 +22,9 @@ function Home() {
             <h1>Inventario del Supermercado</h1>
 
             <div className="resumen">
-                <div className="tarjeta">
-                    <span className="numero">{productos.length}</span>
-                    <span>Productos</span>
-                </div>
-                <div className="tarjeta">
-                    <span className="numero">{totalUnidades}</span>
-                    <span>Unidades en stock</span>
-                </div>
-                <div className="tarjeta alerta">
-                    <span className="numero">{alertas}</span>
-                    <span>Con stock bajo o agotado</span>
-                </div>
+                <TarjetaResumen numero={productos.length} texto="Productos" />
+                <TarjetaResumen numero={totalUnidades} texto="Unidades en stock" />
+                <TarjetaResumen numero={alertas} texto="Con stock bajo o agotado" alerta />
             </div>
 
             <input
@@ -54,22 +47,9 @@ function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtrados.map((p) => {
-                            const estado = estadoStock(p.stock);
-                            return (
-                                <tr key={p.id}>
-                                    <td>
-                                        <Link to={`/producto/${p.id}`} className="link-producto">{p.nombre}</Link>
-                                    </td>
-                                    <td>{p.categoria}</td>
-                                    <td>{p.stock}</td>
-                                    <td>${p.precio.toLocaleString('es-CL')}</td>
-                                    <td>
-                                        <span className={`estado ${estado.clase}`}>{estado.texto}</span>
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                        {filtrados.map((p) => (
+                            <FilaProducto key={p.id} producto={p} />
+                        ))}
                     </tbody>
                 </table>
                 {filtrados.length === 0 && (
