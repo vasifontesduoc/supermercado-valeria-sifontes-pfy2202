@@ -428,4 +428,20 @@ tbody tr:hover {
   .detalle p {
     margin: 10px 0;
   }
+
+  /* Ajustes por el reset de Tailwind */
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .pagina-texto>p {
+    margin-bottom: 1rem;
+  }
+
+  .bloque ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
 }
