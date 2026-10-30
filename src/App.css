@@ -83,86 +83,6 @@ h1 {
   }
 }
 
-/* ===== Menú inferior flotante ===== */
-.menu-inferior {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 32px);
-  max-width: 560px;
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  background: var(--blanco);
-  padding: 8px;
-  border-radius: 999px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.menu-inferior a {
-  flex: 1;
-  text-align: center;
-  color: var(--gris);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 10px 8px;
-  border-radius: 999px;
-  transition: background 0.2s, color 0.2s;
-  white-space: nowrap;
-}
-
-.menu-inferior a:hover {
-  background: var(--verde-claro);
-  color: var(--verde-oscuro);
-}
-
-.menu-inferior a.active {
-  background: var(--verde);
-  color: var(--blanco);
-}
-
-/* ===== Tarjetas resumen ===== */
-.resumen {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  margin-bottom: 28px;
-}
-
-.tarjeta {
-  background: var(--blanco);
-  border-radius: var(--radio);
-  padding: 20px 22px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--sombra);
-  border-left: 5px solid var(--verde);
-  color: var(--gris);
-  transition: transform 0.2s;
-}
-
-.tarjeta:hover {
-  transform: translateY(-3px);
-}
-
-.tarjeta .numero {
-  font-family: 'Outfit', sans-serif;
-  font-size: 2.3rem;
-  font-weight: 700;
-  color: var(--verde);
-  line-height: 1.1;
-}
-
-.tarjeta.alerta {
-  border-left-color: var(--naranja);
-}
-
-.tarjeta.alerta .numero {
-  color: var(--naranja);
-}
-
 /* ===== Buscador ===== */
 .buscador {
   width: 100%;
@@ -379,11 +299,6 @@ tbody tr:hover {
 @media (max-width: 600px) {
   h1 {
     font-size: 1.7rem;
-  }
-
-  .menu-inferior a {
-    font-size: 0.8rem;
-    padding: 10px 4px;
   }
 
   /* Detalle de producto */

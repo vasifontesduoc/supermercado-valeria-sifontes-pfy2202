@@ -21,7 +21,7 @@ function Home() {
         <section>
             <h1>Inventario del Supermercado</h1>
 
-            <div className="resumen">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-7">
                 <TarjetaResumen numero={productos.length} texto="Productos" />
                 <TarjetaResumen numero={totalUnidades} texto="Unidades en stock" />
                 <TarjetaResumen numero={alertas} texto="Con stock bajo o agotado" alerta />
