@@ -1,0 +1,1 @@
+var e=[`Abarrotes`,`Lácteos`,`Panadería`,`Frutas y Verduras`,`Carnes`,`Bebidas`,`Limpieza`];export{e as t};

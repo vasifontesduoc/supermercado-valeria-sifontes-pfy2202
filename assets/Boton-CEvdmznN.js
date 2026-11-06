@@ -1,0 +1,1 @@
+import{n as e}from"./index-CtHI7DRr.js";var t=e(),n={primario:`btn-primario`,secundario:`btn-secundario`,peligro:`btn-peligro`};function r({variante:e=`primario`,type:r=`button`,className:i=``,...a}){return(0,t.jsx)(`button`,{type:r,className:`btn ${n[e]} ${i}`,...a})}export{r as t};

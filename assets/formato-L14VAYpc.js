@@ -1,0 +1,1 @@
+function e(e){return`$${e.toLocaleString(`es-CL`)}`}export{e as t};
