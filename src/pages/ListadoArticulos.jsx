@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useInventario } from '../context/InventarioContext';
 import FiltroCategorias from '../components/FiltroCategorias';
 import EtiquetaStock from '../components/EtiquetaStock';
+import Tabla from '../components/Tabla';
+import EstadoVacio from '../components/EstadoVacio';
 import { formatearPrecio } from '../utils/formato';
 
 function ListadoArticulos() {
@@ -18,8 +20,6 @@ function ListadoArticulos() {
             ? articulos
             : articulos.filter((articulo) => articulo.tipo === categoria);
 
-    const celda = 'px-5 py-3';
-
     return (
         <section>
             <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
@@ -29,7 +29,7 @@ function ListadoArticulos() {
                 </Link>
             </div>
 
-            <p className="text-gray-500 mb-4">
+            <p className="text-gris mb-4">
                 Mostrando {articulosFiltrados.length} de {articulos.length} artículos
                 {categoria !== 'Todas' && ` · Categoría: ${categoria}`}
             </p>
@@ -41,62 +41,52 @@ function ListadoArticulos() {
             />
 
             {articulosFiltrados.length === 0 ? (
-                <div className="panel text-center text-gray-500">
-                    {articulos.length === 0
-                        ? 'No hay artículos en el inventario.'
-                        : `No hay artículos en la categoría "${categoria}".`}
-                </div>
+                <EstadoVacio
+                    icono="📦"
+                    titulo={articulos.length === 0 ? 'No hay artículos en el inventario' : 'Sin artículos en esta categoría'}
+                    mensaje={articulos.length === 0 ? 'Agrega el primero desde el formulario.' : `No hay artículos de "${categoria}".`}
+                >
+                    <Link to="/articulos/nuevo" className="btn btn-primario">
+                        + Agregar artículo
+                    </Link>
+                </EstadoVacio>
             ) : (
-                <div className="overflow-x-auto bg-white rounded-2xl shadow-suave">
-                    <table className="w-full text-left">
-                        <thead className="bg-verde-claro text-verde-oscuro text-sm uppercase">
-                            <tr>
-                                <th className={celda}>Nombre</th>
-                                <th className={celda}>Marca</th>
-                                <th className={celda}>Tipo</th>
-                                <th className={celda}>Precio</th>
-                                <th className={celda}>Stock</th>
-                                <th className={celda}>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {articulosFiltrados.map((articulo) => (
-                                <tr
-                                    key={articulo.id}
-                                    onClick={() => navigate(`/articulos/${articulo.id}`)}
-                                    className="cursor-pointer hover:bg-green-50 transition"
+                <Tabla columnas={['Nombre', 'Marca', 'Tipo', 'Precio', 'Stock', 'Acciones']}>
+                    {articulosFiltrados.map((articulo) => (
+                        <tr
+                            key={articulo.id}
+                            onClick={() => navigate(`/articulos/${articulo.id}`)}
+                            className="cursor-pointer hover:bg-green-50 transition"
+                        >
+                            <td className="celda font-medium text-verde-oscuro">
+                                <Link to={`/articulos/${articulo.id}`} className="hover:underline">
+                                    {articulo.nombre}
+                                </Link>
+                            </td>
+                            <td className="celda">{articulo.marca}</td>
+                            <td className="celda">
+                                <span className="etiqueta bg-verde-claro text-verde-oscuro">{articulo.tipo}</span>
+                            </td>
+                            <td className="celda">{formatearPrecio(articulo.precio)}</td>
+                            <td className="celda whitespace-nowrap">
+                                <span className="mr-2 font-semibold">{articulo.stock}</span>
+                                <EtiquetaStock stock={articulo.stock} />
+                            </td>
+                            <td className="celda">
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // evita que el clic abra el detalle
+                                        eliminarArticulo(articulo.id);
+                                    }}
+                                    className="btn btn-peligro px-3 py-1 text-sm"
                                 >
-                                    <td className={`${celda} font-medium text-verde-oscuro`}>
-                                        <Link to={`/articulos/${articulo.id}`} className="hover:underline">
-                                            {articulo.nombre}
-                                        </Link>
-                                    </td>
-                                    <td className={celda}>{articulo.marca}</td>
-                                    <td className={celda}>
-                                        <span className="etiqueta bg-verde-claro text-verde-oscuro">{articulo.tipo}</span>
-                                    </td>
-                                    <td className={celda}>{formatearPrecio(articulo.precio)}</td>
-                                    <td className={celda}>
-                                        <span className="mr-2 font-semibold">{articulo.stock}</span>
-                                        <EtiquetaStock stock={articulo.stock} />
-                                    </td>
-                                    <td className={celda}>
-                                        <button
-                                            type="button"
-                                            onClick={(e) => {
-                                                e.stopPropagation(); // evita que el clic abra el detalle
-                                                eliminarArticulo(articulo.id);
-                                            }}
-                                            className="btn btn-peligro px-3 py-1 text-sm"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </Tabla>
             )}
         </section>
     );

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { formatearPrecio } from '../utils/formato';
 
 // Una fila del carrito con los botones para cambiar la cantidad
@@ -12,7 +12,7 @@ function ItemCarrito({ item, onAumentar, onDisminuir, onQuitar }) {
                 >
                     {item.nombre}
                 </Link>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gris">
                     {item.marca} · {formatearPrecio(item.precio)} c/u
                 </p>
                 <p className="text-xs text-gray-400 mt-1">Quedan {item.stock} en inventario</p>

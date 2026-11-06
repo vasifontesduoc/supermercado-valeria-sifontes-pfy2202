@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 const enlaces = [
     { to: '/', texto: '🏠 Inicio' },
@@ -10,7 +10,7 @@ function MenuInferior() {
     const estilo = ({ isActive }) =>
         `flex-1 text-center whitespace-nowrap rounded-full px-1 sm:px-2 py-2.5 text-xs sm:text-[0.95rem] font-medium transition-colors ${isActive
             ? 'bg-verde text-white'
-            : 'text-gray-500 hover:bg-verde-claro hover:text-verde-oscuro'
+            : 'text-gris hover:bg-verde-claro hover:text-verde-oscuro'
         }`;
 
     return (

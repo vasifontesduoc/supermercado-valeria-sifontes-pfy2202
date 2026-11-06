@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useInventario } from '../context/InventarioContext';
 import ItemCarrito from '../components/ItemCarrito';
 import Boton from '../components/Boton';
+import EstadoVacio from '../components/EstadoVacio';
 import { formatearPrecio } from '../utils/formato';
 
 function Carrito() {
@@ -17,13 +18,16 @@ function Carrito() {
 
     if (itemsCarrito.length === 0) {
         return (
-            <section className="panel py-12 text-center">
-                <p className="text-6xl mb-4">🛒</p>
-                <h1 className="titulo-pagina mb-2">Tu carrito está vacío</h1>
-                <p className="text-gray-500 mb-6">Agrega artículos desde el listado del inventario.</p>
-                <Link to="/articulos" className="btn btn-primario">
-                    Ver artículos
-                </Link>
+            <section>
+                <EstadoVacio
+                    icono="🛒"
+                    titulo="Tu carrito está vacío"
+                    mensaje="Agrega artículos desde el listado del inventario."
+                >
+                    <Link to="/articulos" className="btn btn-primario">
+                        Ver artículos
+                    </Link>
+                </EstadoVacio>
             </section>
         );
     }
@@ -51,12 +55,12 @@ function Carrito() {
                 </ul>
 
                 <aside className="panel h-fit">
-                    <h2 className="font-titulo text-xl font-bold text-verde-oscuro mb-4">Resumen</h2>
-                    <div className="flex justify-between text-gray-500 mb-2">
+                    <h2 className="text-xl font-bold text-verde-oscuro mb-4">Resumen</h2>
+                    <div className="flex justify-between text-gris mb-2">
                         <span>Unidades</span>
                         <span>{unidadesEnCarrito}</span>
                     </div>
-                    <div className="flex justify-between border-t border-gray-100 pt-3 mb-6 text-lg font-bold">
+                    <div className="flex justify-between border-t border-borde pt-3 mb-6 text-lg font-bold">
                         <span>Total</span>
                         <span>{formatearPrecio(totalCarrito)}</span>
                     </div>

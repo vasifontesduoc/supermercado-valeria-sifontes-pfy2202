@@ -48,7 +48,7 @@ export function InventarioProvider({ children }) {
         totalCarrito,
         cantidadEnCarrito,
         agregarArticulo: (articulo) =>
-            dispatch({ type: 'AGREGAR_ARTICULO', payload: { id: Date.now(), ...articulo } }),
+            dispatch({ type: 'AGREGAR_ARTICULO', payload: { id: crypto.randomUUID(), ...articulo } }),
         eliminarArticulo: (id) => dispatch({ type: 'ELIMINAR_ARTICULO', payload: id }),
         agregarAlCarrito: (id) => dispatch({ type: 'AGREGAR_AL_CARRITO', payload: id }),
         disminuirDelCarrito: (id) => dispatch({ type: 'DISMINUIR_DEL_CARRITO', payload: id }),

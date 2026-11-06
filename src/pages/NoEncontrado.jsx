@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
+import EstadoVacio from '../components/EstadoVacio';
 
 function NoEncontrado() {
     return (
-        <section className="panel py-12 text-center">
-            <p className="text-6xl mb-4">🧺</p>
-            <h1 className="titulo-pagina mb-2">Página no encontrada</h1>
-            <p className="text-gray-500 mb-6">La dirección que buscas no existe.</p>
-            <Link to="/" className="btn btn-primario">
-                Volver al inicio
-            </Link>
+        <section>
+            <EstadoVacio icono="🧺" titulo="Página no encontrada" mensaje="La dirección que buscas no existe.">
+                <Link to="/" className="btn btn-primario">
+                    Volver al inicio
+                </Link>
+            </EstadoVacio>
         </section>
     );
 }

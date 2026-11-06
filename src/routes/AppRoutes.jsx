@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import Layout from '../layouts/Layout';
 
 // Lazy loading: cada página se descarga recién cuando el usuario la visita

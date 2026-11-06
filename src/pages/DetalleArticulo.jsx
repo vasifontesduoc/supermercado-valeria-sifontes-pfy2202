@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useInventario } from '../context/InventarioContext';
 import Boton from '../components/Boton';
+import EstadoVacio from '../components/EstadoVacio';
 import EtiquetaStock from '../components/EtiquetaStock';
 import { formatearPrecio } from '../utils/formato';
 
@@ -13,23 +14,23 @@ function DetalleArticulo() {
     // Estado booleano simple para mostrar el aviso "Agregado al carrito"
     const [agregado, setAgregado] = useState(false);
 
-    // El aviso se oculta a los 2 segundos. La función de limpieza cancela el
-    // temporizador si el usuario sale de la página antes.
     useEffect(() => {
         if (!agregado) return;
         const temporizador = setTimeout(() => setAgregado(false), 2000);
         return () => clearTimeout(temporizador);
     }, [agregado]);
 
-    const articulo = articulos.find((a) => a.id === Number(id));
+    // El id de la URL es texto, por eso se compara como texto
+    const articulo = articulos.find((a) => String(a.id) === id);
 
     if (!articulo) {
         return (
-            <section className="panel text-center">
-                <h1 className="titulo-pagina mb-4">Artículo no encontrado</h1>
-                <Link to="/articulos" className="btn btn-primario">
-                    Volver al listado
-                </Link>
+            <section>
+                <EstadoVacio icono="🔎" titulo="Artículo no encontrado" mensaje="Puede que haya sido eliminado.">
+                    <Link to="/articulos" className="btn btn-primario">
+                        Volver al listado
+                    </Link>
+                </EstadoVacio>
             </section>
         );
     }
@@ -51,17 +52,17 @@ function DetalleArticulo() {
             <div className="panel p-8">
                 <span className="etiqueta bg-verde-claro text-verde-oscuro mb-3">{articulo.tipo}</span>
                 <h1 className="titulo-pagina mb-1">{articulo.nombre}</h1>
-                <p className="text-gray-500 mb-6">Marca: {articulo.marca}</p>
+                <p className="text-gris mb-6">Marca: {articulo.marca}</p>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="rounded-xl bg-crema p-4">
-                        <p className="text-sm text-gray-500">Precio</p>
+                        <p className="text-sm text-gris">Precio</p>
                         <p className="font-titulo text-2xl font-bold text-verde-oscuro">
                             {formatearPrecio(articulo.precio)}
                         </p>
                     </div>
                     <div className="rounded-xl bg-crema p-4">
-                        <p className="text-sm text-gray-500">Disponibles</p>
+                        <p className="text-sm text-gris">Disponibles</p>
                         <p className="font-titulo text-2xl font-bold text-verde-oscuro">{articulo.stock}</p>
                         <EtiquetaStock stock={articulo.stock} />
                     </div>
@@ -78,7 +79,7 @@ function DetalleArticulo() {
                 )}
 
                 {enCarrito > 0 && (
-                    <p className="mt-4 text-center text-gray-500">
+                    <p className="mt-4 text-center text-gris">
                         Tienes {enCarrito} en el carrito ·{' '}
                         <Link to="/carrito" className="font-semibold text-verde hover:underline">
                             Ver carrito
