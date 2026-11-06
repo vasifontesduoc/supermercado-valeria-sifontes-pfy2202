@@ -1,0 +1,1 @@
+import{n as e}from"./index-D5e7mHlW.js";function t(e){return e===0?{texto:`Agotado`,clases:`bg-[#fde3dc] text-[#b23a12]`}:e<10?{texto:`Stock bajo`,clases:`bg-[#fff1d6] text-[#9a6200]`}:{texto:`Disponible`,clases:`bg-verde-claro text-verde-oscuro`}}var n=e();function r({stock:e}){let r=t(e);return(0,n.jsx)(`span`,{className:`etiqueta ${r.clases}`,children:r.texto})}export{r as t};

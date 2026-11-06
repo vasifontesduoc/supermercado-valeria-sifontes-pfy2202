@@ -1,0 +1,1 @@
+import{n as e,r as t}from"./index-D5e7mHlW.js";import{t as n}from"./EstadoVacio-Cspq3hmX.js";var r=e();function i(){return(0,r.jsx)(`section`,{children:(0,r.jsx)(n,{icono:`🧺`,titulo:`Página no encontrada`,mensaje:`La dirección que buscas no existe.`,children:(0,r.jsx)(t,{to:`/`,className:`btn btn-primario`,children:`Volver al inicio`})})})}export{i as default};
