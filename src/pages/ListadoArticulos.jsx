@@ -1,56 +1,93 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useInventario } from '../context/InventarioContext';
+import FiltroCategorias from '../components/FiltroCategorias';
+import EtiquetaStock from '../components/EtiquetaStock';
+import { formatearPrecio } from '../utils/formato';
 
 function ListadoArticulos() {
     const { articulos, eliminarArticulo } = useInventario();
+    const navigate = useNavigate();
+
+    // El filtro es estado local: solo esta página lo necesita
+    const [categoria, setCategoria] = useState('Todas');
+
+    // No se modifica el inventario original: se calcula una lista filtrada a partir de él
+    const articulosFiltrados =
+        categoria === 'Todas'
+            ? articulos
+            : articulos.filter((articulo) => articulo.tipo === categoria);
+
+    const celda = 'px-5 py-3';
 
     return (
         <section>
             <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
-                <h1 className="font-titulo text-3xl font-bold text-verde-oscuro">
-                    Listado de artículos
-                </h1>
-                <Link
-                    to="/articulos/nuevo"
-                    className="bg-verde hover:bg-verde-oscuro text-white font-bold px-5 py-2 rounded-full transition"
-                >
+                <h1 className="titulo-pagina">Listado de artículos</h1>
+                <Link to="/articulos/nuevo" className="btn btn-primario">
                     + Agregar artículo
                 </Link>
             </div>
 
-            <p className="text-gray-500 mb-6">Total en inventario: {articulos.length} artículos</p>
+            <p className="text-gray-500 mb-4">
+                Mostrando {articulosFiltrados.length} de {articulos.length} artículos
+                {categoria !== 'Todas' && ` · Categoría: ${categoria}`}
+            </p>
 
-            {articulos.length === 0 ? (
-                <p className="bg-white rounded-2xl shadow-md p-8 text-center text-gray-500">
-                    No hay artículos en el inventario.
-                </p>
+            <FiltroCategorias
+                articulos={articulos}
+                seleccionada={categoria}
+                onSeleccionar={setCategoria}
+            />
+
+            {articulosFiltrados.length === 0 ? (
+                <div className="panel text-center text-gray-500">
+                    {articulos.length === 0
+                        ? 'No hay artículos en el inventario.'
+                        : `No hay artículos en la categoría "${categoria}".`}
+                </div>
             ) : (
-                <div className="overflow-x-auto bg-white rounded-2xl shadow-md">
+                <div className="overflow-x-auto bg-white rounded-2xl shadow-suave">
                     <table className="w-full text-left">
                         <thead className="bg-verde-claro text-verde-oscuro text-sm uppercase">
                             <tr>
-                                <th className="px-5 py-3">#</th>
-                                <th className="px-5 py-3">Nombre</th>
-                                <th className="px-5 py-3">Marca</th>
-                                <th className="px-5 py-3">Tipo</th>
-                                <th className="px-5 py-3">Acciones</th>
+                                <th className={celda}>Nombre</th>
+                                <th className={celda}>Marca</th>
+                                <th className={celda}>Tipo</th>
+                                <th className={celda}>Precio</th>
+                                <th className={celda}>Stock</th>
+                                <th className={celda}>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {articulos.map((articulo, index) => (
-                                <tr key={articulo.id} className="hover:bg-green-50 transition">
-                                    <td className="px-5 py-3 text-gray-400">{index + 1}</td>
-                                    <td className="px-5 py-3 font-medium">{articulo.nombre}</td>
-                                    <td className="px-5 py-3">{articulo.marca}</td>
-                                    <td className="px-5 py-3">
-                                        <span className="bg-verde-claro text-verde-oscuro text-xs font-bold px-3 py-1 rounded-full">
-                                            {articulo.tipo}
-                                        </span>
+                            {articulosFiltrados.map((articulo) => (
+                                <tr
+                                    key={articulo.id}
+                                    onClick={() => navigate(`/articulos/${articulo.id}`)}
+                                    className="cursor-pointer hover:bg-green-50 transition"
+                                >
+                                    <td className={`${celda} font-medium text-verde-oscuro`}>
+                                        <Link to={`/articulos/${articulo.id}`} className="hover:underline">
+                                            {articulo.nombre}
+                                        </Link>
                                     </td>
-                                    <td className="px-5 py-3">
+                                    <td className={celda}>{articulo.marca}</td>
+                                    <td className={celda}>
+                                        <span className="etiqueta bg-verde-claro text-verde-oscuro">{articulo.tipo}</span>
+                                    </td>
+                                    <td className={celda}>{formatearPrecio(articulo.precio)}</td>
+                                    <td className={celda}>
+                                        <span className="mr-2 font-semibold">{articulo.stock}</span>
+                                        <EtiquetaStock stock={articulo.stock} />
+                                    </td>
+                                    <td className={celda}>
                                         <button
-                                            onClick={() => eliminarArticulo(articulo.id)}
-                                            className="text-red-600 hover:bg-red-50 px-3 py-1 rounded-full text-sm font-medium transition"
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // evita que el clic abra el detalle
+                                                eliminarArticulo(articulo.id);
+                                            }}
+                                            className="btn btn-peligro px-3 py-1 text-sm"
                                         >
                                             Eliminar
                                         </button>

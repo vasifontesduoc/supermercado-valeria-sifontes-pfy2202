@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInventario } from '../context/InventarioContext';
+import { CATEGORIAS } from '../data/categorias';
+import Boton from '../components/Boton';
 
-const tipos = ['Abarrotes', 'Lácteos', 'Panadería', 'Frutas y Verduras', 'Carnes', 'Bebidas', 'Limpieza'];
-
-const estiloCampo =
-    'w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-verde focus:ring-4 focus:ring-verde-claro';
+const formularioVacio = { nombre: '', marca: '', tipo: '', precio: '', stock: '' };
 
 function AgregarArticulo() {
     const { agregarArticulo } = useInventario();
     const navigate = useNavigate();
-    const [form, setForm] = useState({ nombre: '', marca: '', tipo: '' });
+    const [form, setForm] = useState(formularioVacio);
     const [error, setError] = useState('');
 
     const handleChange = (e) => {
@@ -19,25 +18,37 @@ function AgregarArticulo() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!form.nombre.trim() || !form.marca.trim() || !form.tipo) {
+        const precio = Number(form.precio);
+        const stock = Number(form.stock);
+
+        if (!form.nombre.trim() || !form.marca.trim() || !form.tipo || form.precio === '' || form.stock === '') {
             setError('Por favor completa todos los campos.');
             return;
         }
+        if (!Number.isInteger(precio) || precio <= 0) {
+            setError('El precio debe ser un número entero mayor a 0.');
+            return;
+        }
+        if (!Number.isInteger(stock) || stock < 0) {
+            setError('El stock debe ser un número entero igual o mayor a 0.');
+            return;
+        }
+
         agregarArticulo({
             nombre: form.nombre.trim(),
             marca: form.marca.trim(),
             tipo: form.tipo,
+            precio,
+            stock,
         });
         navigate('/articulos'); // redirige al listado después de guardar
     };
 
     return (
         <section className="max-w-xl">
-            <h1 className="font-titulo text-3xl font-bold text-verde-oscuro mb-6">
-                Agregar artículo
-            </h1>
+            <h1 className="titulo-pagina mb-6">Agregar artículo</h1>
 
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-md p-8 space-y-5">
+            <form onSubmit={handleSubmit} className="panel p-8 space-y-5" noValidate>
                 <div>
                     <label htmlFor="nombre" className="block font-medium mb-1">Nombre</label>
                     <input
@@ -46,7 +57,7 @@ function AgregarArticulo() {
                         value={form.nombre}
                         onChange={handleChange}
                         placeholder="Ej: Yogurt Natural 1 L"
-                        className={estiloCampo}
+                        className="campo"
                     />
                 </div>
 
@@ -58,36 +69,56 @@ function AgregarArticulo() {
                         value={form.marca}
                         onChange={handleChange}
                         placeholder="Ej: Soprole"
-                        className={estiloCampo}
+                        className="campo"
                     />
                 </div>
 
                 <div>
                     <label htmlFor="tipo" className="block font-medium mb-1">Tipo de producto</label>
-                    <select
-                        id="tipo"
-                        name="tipo"
-                        value={form.tipo}
-                        onChange={handleChange}
-                        className={estiloCampo}
-                    >
+                    <select id="tipo" name="tipo" value={form.tipo} onChange={handleChange} className="campo">
                         <option value="">Selecciona un tipo</option>
-                        {tipos.map((tipo) => (
+                        {CATEGORIAS.map((tipo) => (
                             <option key={tipo} value={tipo}>{tipo}</option>
                         ))}
                     </select>
                 </div>
 
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label htmlFor="precio" className="block font-medium mb-1">Precio ($)</label>
+                        <input
+                            id="precio"
+                            name="precio"
+                            type="number"
+                            min="1"
+                            value={form.precio}
+                            onChange={handleChange}
+                            placeholder="Ej: 1890"
+                            className="campo"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="stock" className="block font-medium mb-1">Stock inicial</label>
+                        <input
+                            id="stock"
+                            name="stock"
+                            type="number"
+                            min="0"
+                            value={form.stock}
+                            onChange={handleChange}
+                            placeholder="Ej: 20"
+                            className="campo"
+                        />
+                    </div>
+                </div>
+
                 {error && (
-                    <p className="bg-red-50 text-red-700 rounded-xl px-4 py-2 text-sm">{error}</p>
+                    <p className="bg-red-50 text-red-700 rounded-xl px-4 py-2 text-sm" role="alert">{error}</p>
                 )}
 
-                <button
-                    type="submit"
-                    className="w-full bg-verde hover:bg-verde-oscuro text-white font-bold py-3 rounded-full transition"
-                >
+                <Boton type="submit" className="w-full py-3">
                     Guardar artículo
-                </button>
+                </Boton>
             </form>
         </section>
     );

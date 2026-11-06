@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Clases reutilizables creadas con @apply (buena práctica de Tailwind de la guía) */
+@layer components {
+  .titulo-pagina {
+    @apply font-titulo text-3xl font-bold text-verde-oscuro;
+  }
+
+  .panel {
+    @apply bg-white rounded-2xl shadow-suave p-6;
+  }
+
+  .campo {
+    @apply w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white
+      focus:outline-none focus:border-verde focus:ring-4 focus:ring-verde-claro;
+  }
+
+  .etiqueta {
+    @apply inline-block px-3 py-1 rounded-full text-xs font-bold;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-bold px-5 py-2.5 rounded-full
+      transition focus:outline-none focus-visible:ring-4 focus-visible:ring-verde-claro
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primario {
+    @apply bg-verde text-white hover:bg-verde-oscuro disabled:hover:bg-verde;
+  }
+
+  .btn-secundario {
+    @apply border-2 border-verde text-verde hover:bg-verde hover:text-white;
+  }
+
+  .btn-peligro {
+    @apply text-red-600 hover:bg-red-50;
+  }
+
+  .btn-cantidad {
+    @apply w-9 h-9 rounded-full border-2 border-verde text-verde text-lg font-bold leading-none
+      transition hover:bg-verde hover:text-white
+      disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-verde;
+  }
+}

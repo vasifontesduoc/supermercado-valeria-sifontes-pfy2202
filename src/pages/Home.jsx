@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import { productos } from '../data/productos';
+import { useInventario } from '../context/InventarioContext';
 import { normalizar } from '../utils/normalizar';
 import TarjetaResumen from '../components/TarjetaResumen';
 import FilaProducto from '../components/FilaProducto';
 
 function Home() {
+    const { articulos: productos } = useInventario(); // mismo inventario global
     const [busqueda, setBusqueda] = useState('');
 
     const texto = normalizar(busqueda);
     const filtrados = productos.filter(
         (p) =>
             normalizar(p.nombre).includes(texto) ||
-            normalizar(p.categoria).includes(texto)
+            normalizar(p.tipo).includes(texto) ||
+            normalizar(p.marca).includes(texto)
     );
 
     const totalUnidades = productos.reduce((suma, p) => suma + p.stock, 0);
@@ -30,7 +32,7 @@ function Home() {
             <input
                 type="text"
                 className="buscador"
-                placeholder="Buscar por producto o categoría..."
+                placeholder="Buscar por producto, marca o categoría..."
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
             />
