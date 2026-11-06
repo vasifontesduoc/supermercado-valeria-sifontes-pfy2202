@@ -1,4 +1,4 @@
-# 🛒 SuperMercado – Gestión de Inventario
+# SuperMercado – Gestión de Inventario
 
 🌐 **Sitio publicado:** https://vasifontesduoc.github.io/supermercado-valeria-sifontes-pfy2202/
 
@@ -15,24 +15,28 @@
 ## Tecnologías
 
 - React + **Vite**
-- **React Router**: rutas centralizadas en `AppRoutes`, layout con `Outlet`, rutas anidadas (`/articulos`, `/articulos/nuevo`, `/articulos/:id`), parámetros dinámicos con `useParams`, redirección con `useNavigate` y **lazy loading** con `React.lazy` + `Suspense`.
+- **React Router** (paquete `react-router`): rutas centralizadas en `AppRoutes`, layout con `Outlet`, rutas anidadas (`/articulos`, `/articulos/nuevo`, `/articulos/:id`), parámetros dinámicos con `useParams`, redirección con `useNavigate` y **lazy loading** con `React.lazy` + `Suspense`.
 - **Gestión de estado**: estado global con **Context API + useReducer** (inventario y carrito), estado local con `useState` (filtro, formulario, avisos), `useEffect` para guardar en `localStorage` y para limpiar temporizadores.
-- **Tailwind CSS**: tema propio en `tailwind.config.js` (colores, tipografía y sombras), clases reutilizables con `@apply` en `index.css` (`.btn`, `.panel`, `.campo`, `.etiqueta`) y componente `Boton` con variantes.
+- **Tailwind CSS** en todo el sitio (sin CSS propio aparte): tema en `tailwind.config.js` (colores, tipografías, sombras y animación), estilos base y clases reutilizables con `@apply` en `index.css` (`.btn`, `.panel`, `.campo`, `.celda`, `.etiqueta`) y componente `Boton` con variantes.
+- **Formularios**: hook `useFormulario` (valores, cambios, validación y envío) y validaciones con **expresiones regulares** reutilizables en `utils/validaciones.js`.
+- Identificadores con `crypto.randomUUID()` y lectura de `localStorage` protegida con `try/catch`.
 - **GitHub Pages** con `gh-pages`.
 
 ## Estructura
 
 ```
 src/
-├── components/   → MenuSuperior, MenuInferior, Boton, EtiquetaStock, FiltroCategorias,
-│                   ItemCarrito, TarjetaResumen, FilaProducto
+├── components/   → MenuSuperior, MenuInferior, Boton, CampoFormulario, MensajeError,
+│                   EstadoVacio, Tabla, EtiquetaStock, FiltroCategorias, ItemCarrito,
+│                   TarjetaResumen, FilaProducto
 ├── context/      → InventarioContext (Provider + hook) e inventarioReducer (acciones)
 ├── data/         → articulosIniciales y categorias
+├── hooks/        → useFormulario (lógica compartida de formularios)
 ├── layouts/      → Layout (header, menús y Outlet)
 ├── pages/        → Home, QuienesSomos, Contactanos, ListadoArticulos, AgregarArticulo,
 │                   DetalleArticulo, Carrito, NoEncontrado
 ├── routes/       → AppRoutes (todas las rutas del sitio)
-└── utils/        → normalizar, stock, formato
+└── utils/        → normalizar, stock, formato, validaciones
 ```
 
 ## Estado global (inventarioReducer)
@@ -74,8 +78,13 @@ src/
 | Abrir `/articulos/999` | Muestra "Artículo no encontrado" |
 | Abrir una dirección inexistente (ej. `/hola`) | Muestra "Página no encontrada" |
 | Buscar `lacteos` o `LIQUIDO` en Inicio | Encuentra los artículos aunque tengan tilde o distinta mayúscula |
-| Agregar un artículo con campos vacíos o precio inválido | Muestra un mensaje de error y no guarda |
+| Agregar un artículo con campos vacíos, nombre con símbolos (ej. `<script>`) o precio inválido | Muestra un mensaje de error y no guarda |
+| Agregar dos artículos seguidos | Ambos aparecen en el listado, en Inicio y tienen su propio detalle |
+| Agregar un artículo y abrir su detalle | El detalle muestra sus datos y permite agregarlo al carrito |
+| Enviar Contáctanos con nombre con números o correo sin dominio | Muestra un mensaje de error y no envía |
 | Recargar la página | Inventario y carrito se mantienen |
+| Datos inválidos en `localStorage` (ej. escribir `localStorage.setItem('inventario-supermercado', 'xyz')` en la consola y recargar) | El sitio no se cae y parte con el inventario inicial |
+| Ver el sitio en escritorio y en celular (`Cmd + Shift + M` en DevTools) | El diseño se adapta: tablas con scroll horizontal, tarjetas y carrito en una columna |
 
 ## Cómo ejecutarlo
 
